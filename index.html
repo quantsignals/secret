@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Word API</title>
+    <script>
+        // Hardcoded words list
+        const words = ["hello", "world", "java", "code", "python", "random", "api", "github", "web", "free"];
+
+        function handleAPIRequest() {
+            let params = new URLSearchParams(window.location.search);
+
+            // If ?json=true is in the URL, return JSON response
+            if (params.has("json")) {
+                let number = parseInt(params.get("number")) || 1; // Number of words (default: 1)
+                number = Math.min(number, words.length); // Limit max words
+                let randomWords = [];
+                
+                // Pick `number` of random words
+                for (let i = 0; i < number; i++) {
+                    let word = words[Math.floor(Math.random() * words.length)];
+                    randomWords.push(word);
+                }
+
+                let jsonResponse = JSON.stringify({ words: randomWords }, null, 2);
+
+                // Display JSON as plain text
+                document.body.innerHTML = `<pre>${jsonResponse}</pre>`;
+            }
+        }
+
+        window.onload = handleAPIRequest;
+    </script>
+</head>
+<body>
+    <h1>Random Word API</h1>
+    <p>Use this API by adding <code>?json=true</code> to the URL.</p>
+    <p>Example: <a href="?json=true">Get 1 random word</a></p>
+    <p>Get multiple words: <a href="?json=true&number=3">3 words</a></p>
+</body>
+</html>
